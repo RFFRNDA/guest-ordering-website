@@ -145,7 +145,7 @@ Clone the repository and install dependencies:
 ```bash
 git clone <repository-url>
 cd <project-directory>
-<package-manager> install
+npm install
 ```
 
 ### Environment
@@ -167,7 +167,7 @@ Never commit real credentials or secrets to the repository.
 Start the development environment using the project's configured scripts, for example:
 
 ```bash
-<package-manager> dev
+npm dev
 ```
 
 The exact commands should follow the repository's package configuration.
@@ -231,7 +231,7 @@ Secrets must be provided through local environment configuration or the deployme
 The project is implemented incrementally, with each milestone building on the previous one.
 
 ### Milestone 1 — Domain Foundation
-**Status:** ✅ Documentation complete
+**Status:** ✅ Complete
 - Finalize requirements.
 - Finalize main user flows.
 - Define business rules.
@@ -240,7 +240,7 @@ The project is implemented incrementally, with each milestone building on the pr
 - Define design direction.
 
 ### Milestone 2 — Backend Foundation
-**Status:** ⬜ Not Started
+**Status:** ✅ Complete
 - NestJS project structure.
 - Prisma + PostgreSQL.
 - Core models.
@@ -342,7 +342,7 @@ The current project status is:
 | Data Model | ✅ |
 | Architecture | ✅ |
 | Design Direction | ✅ |
-| Backend | ⬜ |
+| Backend | 🟨 |
 | Frontend | ⬜ |
 | Payment Integration | ⬜ |
 | Testing | ⬜ |

@@ -945,16 +945,13 @@ Operational Exception
 The distinction helps the API return appropriate, safe client-facing behavior while keeping operational issues visible internally.
 
 ## 20.2 API Error Requirements
-
 API errors should be:
-
 - Consistent.
 - Machine-readable.
 - Safe to expose to clients.
 - Free from sensitive internal implementation details.
 
 Customer-facing failure categories include:
-
 - Outlet unavailable.
 - Invalid table context.
 - Product unavailable.
@@ -968,38 +965,30 @@ Customer-facing failure categories include:
 - Expired tracking credential.
 - Temporary system unavailability.
 
-The exact error response schema and HTTP status mapping remain implementation decisions.
+**Implemented error format:** `{ "error": { "code": string, "message": string, "details"?: unknown } }`.
+Validation errors use `code = VALIDATION_FAILED` with HTTP 400 and `details[]` of `{ path, message }`.
+Unexpected errors return `INTERNAL_ERROR` (HTTP 500) with a generic message; details are logged server-side only.
 
 ## 20.3 Payment Provider Failure
-
 The payment provider may be unavailable or return a failed/expired result.
-
 The order remains governed by the normal payment and reservation rules; the frontend must not invent a successful payment state.
 
 ## 20.4 Webhook Duplication
-
 Repeated webhook delivery must be idempotent.
 
 ## 20.5 Background Worker Failure
-
 A failed worker job may retry according to queue policy.
-
 Notification failure must not roll back the core business transaction.
-
 Critical cleanup jobs require visibility and retry handling.
 
 ## 20.6 Redis Failure
-
 PostgreSQL remains the source of truth.
-
 Non-critical Redis-backed behavior should degrade gracefully where practical.
 
 ## 20.7 SSE Failure
-
 The guest tracking page falls back to polling.
 
 ## 20.8 Transaction Rollback
-
 If a protected database transaction fails, business state must remain consistent and the operation must be retried or surfaced as an error/exception according to its workflow.
 
 ---
@@ -1007,9 +996,7 @@ If a protected database transaction fails, business state must remain consistent
 # 21. Observability and Audit Architecture
 
 ## 21.1 Operational Logging
-
 Development/staging should support at least:
-
 - Structured application logs.
 - Error logging.
 - Request correlation/request IDs.
