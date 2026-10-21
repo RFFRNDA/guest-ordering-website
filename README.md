@@ -249,16 +249,15 @@ The project is implemented incrementally, with each milestone building on the pr
 - Configuration management.
 
 ### Milestone 3 — Catalog & Outlet
-**Status:** ⬜ Not Started
-- Outlet.
-- Table.
+**Status:** 🟨 On Progress
+- Outlet, including operating hours, timezone, and table-number range configuration.
 - Category.
 - Product.
 - Product options.
-- Product-level inventory.
-- Table ordering URLs / QR assets.
-- Public menu API.
-- Outlet operating hours and table-number configuration.
+- Seed script for demo data (outlet, categories, products, options).
+- Public menu API (read-only).
+
+> Scope note: write endpoints for outlet and catalog data require authentication and are delivered in Milestone 7. Until then, data is created through the seed script. Table records, table ordering URLs, and QR assets are delivered in Milestone 7. Product-level inventory moves to Milestone 4, together with stock reservation.
 
 ### Milestone 4 — Guest Ordering
 **Status:** ⬜ Not Started
@@ -269,6 +268,7 @@ The project is implemented incrementally, with each milestone building on the pr
 - Checkout.
 - Server-side order validation.
 - Order creation.
+- Product-level inventory and stock reservation on order creation.
 - Guest tracking credential.
 - Email tracking-link delivery.
 - Queue and tracking information display.
@@ -300,7 +300,7 @@ The project is implemented incrementally, with each milestone building on the pr
 **Status:** ⬜ Not Started
 - Admin authentication.
 - Outlet management.
-- Table management and QR assets.
+- Table management, table ordering URLs, and QR assets.
 - Catalog management.
 - Inventory visibility/adjustment.
 - Staff management.
