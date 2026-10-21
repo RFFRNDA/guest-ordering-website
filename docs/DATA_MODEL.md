@@ -153,6 +153,8 @@ Outlet
 └── timestamps
 ```
 
+**Implemented (Milestone 3):** `openTime`/`closeTime` are nullable `"HH:mm"` strings (24h); both set or both null, with `openTime < closeTime` (no midnight crossing), enforced at write time via validation. `timezone` is an IANA name (default `Asia/Jakarta`). Operating status is `isActive`. `queueCounter` and `currentOperationalDay` are added in the milestone that implements queue assignment. IDs are UUID strings.
+
 ### Important Rules
 - Each outlet can have its own operating hours.
 - `timezone` is used to interpret operating-hour and operational-day rules.

@@ -8,9 +8,16 @@ datasource db {
 }
 
 model Outlet {
-  id        String   @id @default(uuid())
-  name      String
-  slug      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id               String   @id @default(uuid())
+  name             String
+  slug             String   @unique
+  address          String?
+  phone            String?
+  isActive         Boolean  @default(true)
+  openTime         String?
+  closeTime        String?
+  timezone         String   @default("Asia/Jakarta")
+  tableNumberLimit Int
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
