@@ -288,7 +288,7 @@ ProductOptionGroup
 └── timestamps
 ```
 
-The exact enum names for `selectionType` are an implementation decision.
+**Implemented (Milestone 3):** `selectionType` is the enum `SelectionType` (`SINGLE`, `MULTIPLE`). `minSelections` defaults to 0; `maxSelections` is nullable (null = no upper limit). Consistency rules (min ≤ max, `SINGLE` implies max 1, required implies min ≥ 1) are enforced by application validation, not by the database. `priceAdjustment` is an integer in whole Rupiah and may be negative. `displayOrder` (default 0) is added to both `ProductOptionGroup` and `ProductOption` to control presentation order. No cascade deletes: configuration is disabled via `isAvailable`/`isActive`, not deleted.
 
 ---
 
@@ -319,6 +319,8 @@ ProductOption
 ```
 
 The selected option and its transaction-time price adjustment are also stored through `OrderItemOption`.
+
+**Implemented (Milestone 3):** `selectionType` is the enum `SelectionType` (`SINGLE`, `MULTIPLE`). `minSelections` defaults to 0; `maxSelections` is nullable (null = no upper limit). Consistency rules (min ≤ max, `SINGLE` implies max 1, required implies min ≥ 1) are enforced by application validation, not by the database. `priceAdjustment` is an integer in whole Rupiah and may be negative. `displayOrder` (default 0) is added to both `ProductOptionGroup` and `ProductOption` to control presentation order. No cascade deletes: configuration is disabled via `isAvailable`/`isActive`, not deleted.
 
 ---
 

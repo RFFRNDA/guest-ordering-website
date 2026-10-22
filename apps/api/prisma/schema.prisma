@@ -48,6 +48,39 @@ model Product {
   price       Int
   isActive    Boolean   @default(true)
   isAvailable Boolean   @default(true)
+  optionGroups ProductOptionGroup[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+}
+
+enum SelectionType {
+  SINGLE
+  MULTIPLE
+}
+
+model ProductOptionGroup {
+  id            String          @id @default(uuid())
+  productId     String
+  product       Product         @relation(fields: [productId], references: [id])
+  name          String
+  isRequired    Boolean         @default(false)
+  selectionType SelectionType   @default(SINGLE)
+  minSelections Int             @default(0)
+  maxSelections Int?
+  displayOrder  Int             @default(0)
+  options       ProductOption[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model ProductOption {
+  id              String             @id @default(uuid())
+  groupId         String
+  group           ProductOptionGroup @relation(fields: [groupId], references: [id])
+  name            String
+  priceAdjustment Int                @default(0)
+  isAvailable     Boolean            @default(true)
+  displayOrder    Int                @default(0)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
 }
