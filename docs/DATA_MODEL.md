@@ -233,6 +233,8 @@ Category
 ```
 Inactive categories should not be presented for new guest ordering.
 
+**Implemented (Milestone 3):** `Category.displayOrder` defaults to 0. `Product.price` is an integer in whole Rupiah (no decimals). `Product.isActive` controls whether a product appears on the menu at all; `Product.isAvailable` is a temporary "sold out" toggle. `Product.categoryId` is nullable. `Product.imageUrl` is an optional URL. The `InventoryItem` relation (one per product) is added in Milestone 4, and seed/creation logic must create it together with each product.
+
 ---
 
 ## 6.2 Product
@@ -258,6 +260,8 @@ Product
 - Product availability is checked during guest ordering.
 - Final transaction pricing is validated server-side.
 - Every Product must have exactly one `InventoryItem` record in MVP.
+
+**Implemented (Milestone 3):** `Category.displayOrder` defaults to 0. `Product.price` is an integer in whole Rupiah (no decimals). `Product.isActive` controls whether a product appears on the menu at all; `Product.isAvailable` is a temporary "sold out" toggle. `Product.categoryId` is nullable. `Product.imageUrl` is an optional URL. The `InventoryItem` relation (one per product) is added in Milestone 4, and seed/creation logic must create it together with each product.
 
 ---
 
