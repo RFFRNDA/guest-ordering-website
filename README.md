@@ -167,7 +167,12 @@ Never commit real credentials or secrets to the repository.
 Start the development environment using the project's configured scripts, for example:
 
 ```bash
-npm dev
+docker compose up -d
+cd apps/api
+npx prisma migrate dev
+npx prisma generate
+npx prisma db seed
+npm run start:dev
 ```
 
 The exact commands should follow the repository's package configuration.
