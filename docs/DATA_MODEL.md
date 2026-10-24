@@ -153,6 +153,8 @@ Outlet
 └── timestamps
 ```
 
+**Implemented (Milestone 3):** `openTime`/`closeTime` are nullable `"HH:mm"` strings (24h); both set or both null, with `openTime < closeTime` (no midnight crossing), enforced at write time via validation. `timezone` is an IANA name (default `Asia/Jakarta`). Operating status is `isActive`. `queueCounter` and `currentOperationalDay` are added in the milestone that implements queue assignment. IDs are UUID strings.
+
 ### Important Rules
 - Each outlet can have its own operating hours.
 - `timezone` is used to interpret operating-hour and operational-day rules.
@@ -231,6 +233,8 @@ Category
 ```
 Inactive categories should not be presented for new guest ordering.
 
+**Implemented (Milestone 3):** `Category.displayOrder` defaults to 0. `Product.price` is an integer in whole Rupiah (no decimals). `Product.isActive` controls whether a product appears on the menu at all; `Product.isAvailable` is a temporary "sold out" toggle. `Product.categoryId` is nullable. `Product.imageUrl` is an optional URL. The `InventoryItem` relation (one per product) is added in Milestone 4, and seed/creation logic must create it together with each product.
+
 ---
 
 ## 6.2 Product
@@ -257,6 +261,8 @@ Product
 - Final transaction pricing is validated server-side.
 - Every Product must have exactly one `InventoryItem` record in MVP.
 
+**Implemented (Milestone 3):** `Category.displayOrder` defaults to 0. `Product.price` is an integer in whole Rupiah (no decimals). `Product.isActive` controls whether a product appears on the menu at all; `Product.isAvailable` is a temporary "sold out" toggle. `Product.categoryId` is nullable. `Product.imageUrl` is an optional URL. The `InventoryItem` relation (one per product) is added in Milestone 4, and seed/creation logic must create it together with each product.
+
 ---
 
 ## 6.3 ProductOptionGroup
@@ -282,7 +288,7 @@ ProductOptionGroup
 └── timestamps
 ```
 
-The exact enum names for `selectionType` are an implementation decision.
+**Implemented (Milestone 3):** `selectionType` is the enum `SelectionType` (`SINGLE`, `MULTIPLE`). `minSelections` defaults to 0; `maxSelections` is nullable (null = no upper limit). Consistency rules (min ≤ max, `SINGLE` implies max 1, required implies min ≥ 1) are enforced by application validation, not by the database. `priceAdjustment` is an integer in whole Rupiah and may be negative. `displayOrder` (default 0) is added to both `ProductOptionGroup` and `ProductOption` to control presentation order. No cascade deletes: configuration is disabled via `isAvailable`/`isActive`, not deleted.
 
 ---
 
@@ -313,6 +319,8 @@ ProductOption
 ```
 
 The selected option and its transaction-time price adjustment are also stored through `OrderItemOption`.
+
+**Implemented (Milestone 3):** `selectionType` is the enum `SelectionType` (`SINGLE`, `MULTIPLE`). `minSelections` defaults to 0; `maxSelections` is nullable (null = no upper limit). Consistency rules (min ≤ max, `SINGLE` implies max 1, required implies min ≥ 1) are enforced by application validation, not by the database. `priceAdjustment` is an integer in whole Rupiah and may be negative. `displayOrder` (default 0) is added to both `ProductOptionGroup` and `ProductOption` to control presentation order. No cascade deletes: configuration is disabled via `isAvailable`/`isActive`, not deleted.
 
 ---
 

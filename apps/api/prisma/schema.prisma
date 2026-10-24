@@ -8,9 +8,79 @@ datasource db {
 }
 
 model Outlet {
-  id        String   @id @default(uuid())
-  name      String
-  slug      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id               String   @id @default(uuid())
+  name             String
+  slug             String   @unique
+  address          String?
+  phone            String?
+  isActive         Boolean  @default(true)
+  openTime         String?
+  closeTime        String?
+  timezone         String   @default("Asia/Jakarta")
+  tableNumberLimit Int
+  categories       Category[]
+  products         Product[]
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Category {
+  id           String    @id @default(uuid())
+  outletId     String
+  outlet       Outlet    @relation(fields: [outletId], references: [id])
+  name         String
+  isActive     Boolean   @default(true)
+  displayOrder Int       @default(0)
+  products     Product[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Product {
+  id          String    @id @default(uuid())
+  outletId    String
+  outlet      Outlet    @relation(fields: [outletId], references: [id])
+  categoryId  String?
+  category    Category? @relation(fields: [categoryId], references: [id])
+  name        String
+  description String?
+  imageUrl    String?
+  price       Int
+  isActive    Boolean   @default(true)
+  isAvailable Boolean   @default(true)
+  optionGroups ProductOptionGroup[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+enum SelectionType {
+  SINGLE
+  MULTIPLE
+}
+
+model ProductOptionGroup {
+  id            String          @id @default(uuid())
+  productId     String
+  product       Product         @relation(fields: [productId], references: [id])
+  name          String
+  isRequired    Boolean         @default(false)
+  selectionType SelectionType   @default(SINGLE)
+  minSelections Int             @default(0)
+  maxSelections Int?
+  displayOrder  Int             @default(0)
+  options       ProductOption[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model ProductOption {
+  id              String             @id @default(uuid())
+  groupId         String
+  group           ProductOptionGroup @relation(fields: [groupId], references: [id])
+  name            String
+  priceAdjustment Int                @default(0)
+  isAvailable     Boolean            @default(true)
+  displayOrder    Int                @default(0)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
 }

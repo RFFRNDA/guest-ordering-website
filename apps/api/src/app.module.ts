@@ -7,6 +7,7 @@ import { PrismaModule } from './prisma/prisma.module.js';
 import { APP_FILTER, APP_PIPE } from '@nestjs/core';
 import { AllExceptionsFilter } from './common/all-exceptions.filter.js';
 import { createValidationPipe } from './common/validation.js';
+import { CatalogModule } from './catalog/catalog.module.js';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { createValidationPipe } from './common/validation.js';
       envFilePath: '../../.env',
       validate: (config) => envSchema.parse(config),
     }),
-    PrismaModule
+    PrismaModule,
+    CatalogModule
   ],
   controllers: [AppController],
   providers: [

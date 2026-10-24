@@ -120,8 +120,8 @@ The repository is expected to follow a structure similar to:
 │   ├── ARCHITECTURE.md
 │   ├── DESIGN.md
 │   └── AGENT.md
-├── packages/
 ├── .env.example
+├── docker-compose.yml
 └── README.md
 ```
 
@@ -133,20 +133,20 @@ The exact source structure may evolve during implementation. Keep the repository
 
 ### Prerequisites
 The development environment should provide:
-- Node.js
-- Package manager used by the repository
-- PostgreSQL
-- Redis
+The development environment should provide:
+- Node.js and npm.
+- Docker (Docker Desktop on Windows/macOS), used to run PostgreSQL. Redis is added in a later milestone.
 
 Payment and email-related development may also require the corresponding sandbox/test credentials.
 
 ### Installation
-Clone the repository and install dependencies:
+Clone the repository:
 ```bash
 git clone <repository-url>
 cd <project-directory>
 npm install
 ```
+Dependencies are installed per app, see the Development steps below.
 
 ### Environment
 Create the required environment files from the example configuration:
@@ -160,17 +160,28 @@ Configure the required values for:
 - Authentication secrets.
 - Midtrans Sandbox.
 - Email/notification services where enabled.
+- `DATABASE_URL` must use the same user, password, and database name as the `POSTGRES_*` values in `.env`.
 
 Never commit real credentials or secrets to the repository.
 
 ### Development
-Start the development environment using the project's configured scripts, for example:
+Make sure Docker is running, then:
 
 ```bash
-npm dev
+docker compose up -d
+cd apps/api
+npm install
+npx prisma migrate dev
+npx prisma generate
+npx prisma db seed
+npm run start:dev
 ```
 
-The exact commands should follow the repository's package configuration.
+The API runs at `http://localhost:4000`, for example `GET /outlets/taste-sudirman/menu`.
+
+Notes:
+- Run API and Prisma commands from `apps/api`; the `.env` file at the repository root is resolved relative to that folder.
+- `npm run test` includes integration tests that require PostgreSQL to be running and the demo data from `npx prisma db seed`.
 
 ---
 
@@ -249,7 +260,7 @@ The project is implemented incrementally, with each milestone building on the pr
 - Configuration management.
 
 ### Milestone 3 — Catalog & Outlet
-**Status:** 🟨 On Progress
+**Status:** ✅ Complete
 - Outlet, including operating hours, timezone, and table-number range configuration.
 - Category.
 - Product.
@@ -406,4 +417,4 @@ For the full coding-agent guidelines, see [AGENT.md](docs/AGENT.md).
 ---
 
 ## 13. License
-Add the project's chosen license here before public distribution.
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
