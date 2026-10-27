@@ -37,20 +37,21 @@ model Category {
 }
 
 model Product {
-  id          String    @id @default(uuid())
-  outletId    String
-  outlet      Outlet    @relation(fields: [outletId], references: [id])
-  categoryId  String?
-  category    Category? @relation(fields: [categoryId], references: [id])
-  name        String
-  description String?
-  imageUrl    String?
-  price       Int
-  isActive    Boolean   @default(true)
-  isAvailable Boolean   @default(true)
+  id           String    @id @default(uuid())
+  outletId     String
+  outlet       Outlet    @relation(fields: [outletId], references: [id])
+  categoryId   String?
+  category     Category? @relation(fields: [categoryId], references: [id])
+  name         String
+  description  String?
+  imageUrl     String?
+  price        Int
+  isActive     Boolean   @default(true)
+  isAvailable  Boolean   @default(true)
   optionGroups ProductOptionGroup[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  inventory    InventoryItem?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }
 
 enum SelectionType {
@@ -83,4 +84,15 @@ model ProductOption {
   displayOrder    Int                @default(0)
   createdAt       DateTime           @default(now())
   updatedAt       DateTime           @updatedAt
+}
+
+model InventoryItem {
+  id                String   @id @default(uuid())
+  productId         String   @unique
+  product           Product  @relation(fields: [productId], references: [id])
+  quantity          Int
+  reservedQuantity  Int      @default(0)
+  lowStockThreshold Int      @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 }

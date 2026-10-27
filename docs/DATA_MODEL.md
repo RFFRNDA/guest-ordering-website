@@ -603,6 +603,8 @@ availableQuantity = quantity - reservedQuantity
 
 These are business invariants. The transaction/concurrency mechanism used to preserve them belongs in `ARCHITECTURE.md`.
 
+**Implemented (Milestone 4):** `InventoryItem.productId` is unique (at most one per product; "exactly one" is enforced by creation logic and seed). `quantity` is required; `reservedQuantity` and `lowStockThreshold` default to 0. The invariant `0 <= reservedQuantity <= quantity` is enforced by a database CHECK constraint (added via SQL in the migration), in addition to application logic. The public menu does not expose stock quantities.
+
 ---
 
 ## 9.2 InventoryTransaction

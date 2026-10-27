@@ -57,7 +57,7 @@ describe('GET /outlets/:slug/menu', () => {
     const kopi = minuman.products.find((p: Named) => p.name === 'Kopi Susu');
     expect(kopi.optionGroups.map((g: Named) => g.name)).toEqual([
       'Ukuran',
-      'Tingkat Gula',
+      'Sugar Level',
       'Tambahan',
     ]);
     const tambahan = kopi.optionGroups[2];

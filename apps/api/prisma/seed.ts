@@ -34,6 +34,9 @@ async function resetOutlet(data: OutletSeed) {
   await prisma.productOptionGroup.deleteMany({
     where: { product: { outletId: outlet.id } },
   });
+  await prisma.inventoryItem.deleteMany({
+    where: { product: { outletId: outlet.id } },
+  });
   await prisma.product.deleteMany({ where: { outletId: outlet.id } });
   await prisma.category.deleteMany({ where: { outletId: outlet.id } });
   return outlet;
@@ -65,6 +68,7 @@ async function main() {
       name: 'Kopi Susu',
       description: 'Espresso dengan susu segar.',
       price: 22000,
+      inventory: { create: { quantity: 50, lowStockThreshold: 5 } },
       optionGroups: {
         create: [
           {
@@ -82,7 +86,7 @@ async function main() {
             },
           },
           {
-            name: 'Tingkat Gula',
+            name: 'Sugar Level',
             isRequired: true,
             selectionType: 'SINGLE',
             minSelections: 1,
@@ -91,8 +95,8 @@ async function main() {
             options: {
               create: [
                 { name: 'Normal', displayOrder: 1 },
-                { name: 'Kurang Manis', displayOrder: 2 },
-                { name: 'Tanpa Gula', displayOrder: 3 },
+                { name: 'Less Sugar', displayOrder: 2 },
+                { name: 'No Sugar', displayOrder: 3 },
               ],
             },
           },
@@ -126,6 +130,7 @@ async function main() {
       categoryId: minuman.id,
       name: 'Es Teh Manis',
       price: 12000,
+      inventory: { create: { quantity: 100, lowStockThreshold: 10 } },
     },
   });
 
@@ -136,6 +141,7 @@ async function main() {
       name: 'Mie Goreng',
       description: 'Mie goreng dengan telur dan sayuran.',
       price: 30000,
+      inventory: { create: { quantity: 30, lowStockThreshold: 5 } },
       optionGroups: {
         create: [
           {
@@ -164,6 +170,7 @@ async function main() {
       categoryId: makanan.id,
       name: 'Nasi Goreng Spesial',
       price: 35000,
+      inventory: { create: { quantity: 20, lowStockThreshold: 5 } },
       isAvailable: false,
     },
   });
@@ -174,6 +181,7 @@ async function main() {
       categoryId: makanan.id,
       name: 'Menu Lama',
       price: 20000,
+      inventory: { create: { quantity: 10, lowStockThreshold: 0 } },
       isActive: false,
     },
   });
@@ -198,6 +206,7 @@ async function main() {
       categoryId: dagoMinuman.id,
       name: 'Kopi Susu',
       price: 24000,
+      inventory: { create: { quantity: 25, lowStockThreshold: 5 } },
     },
   });
 
