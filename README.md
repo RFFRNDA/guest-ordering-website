@@ -271,7 +271,7 @@ The project is implemented incrementally, with each milestone building on the pr
 > Scope note: write endpoints for outlet and catalog data require authentication and are delivered in Milestone 7. Until then, data is created through the seed script. Table records, table ordering URLs, and QR assets are delivered in Milestone 7. Product-level inventory moves to Milestone 4, together with stock reservation.
 
 ### Milestone 4 — Guest Ordering
-**Status:** ⬜ Not Started
+**Status:** 🟨 In Progress
 - Next.js customer UI.
 - QR context.
 - Product customization.
@@ -284,6 +284,8 @@ The project is implemented incrementally, with each milestone building on the pr
 - Email tracking-link delivery.
 - Queue and tracking information display.
 
+> Scope note: queue numbers are assigned when an order becomes `NEW` (after payment confirmation), so queue assignment is delivered in Milestone 5; until then the tracking page shows payment-pending status. Automatic expiry of unpaid reservations is not active in this milestone: the release logic is written in Milestone 5 and scheduled in Milestone 8.
+
 ### Milestone 5 — Payment
 **Status:** ⬜ Not Started
 - Midtrans Sandbox.
@@ -294,6 +296,8 @@ The project is implemented incrementally, with each milestone building on the pr
 - Payment/order synchronization.
 - Payment retry limit.
 - Cancellation/refund behavior.
+- Queue number assignment (atomic counter and operational day) when an order becomes `NEW`.
+- Reservation release logic for cancelled/expired orders (scheduling in Milestone 8).
 
 ### Milestone 6 — Staff Operations
 **Status:** ⬜ Not Started
