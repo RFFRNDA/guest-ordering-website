@@ -18,8 +18,10 @@ model Outlet {
   closeTime        String?
   timezone         String   @default("Asia/Jakarta")
   tableNumberLimit Int
+  serviceFee       Int      @default(0)
   categories       Category[]
   products         Product[]
+  orders           Order[]
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 }
@@ -50,6 +52,7 @@ model Product {
   isAvailable  Boolean   @default(true)
   optionGroups ProductOptionGroup[]
   inventory    InventoryItem?
+  orderItems   OrderItem[]
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 }
@@ -75,15 +78,16 @@ model ProductOptionGroup {
 }
 
 model ProductOption {
-  id              String             @id @default(uuid())
-  groupId         String
-  group           ProductOptionGroup @relation(fields: [groupId], references: [id])
-  name            String
-  priceAdjustment Int                @default(0)
-  isAvailable     Boolean            @default(true)
-  displayOrder    Int                @default(0)
-  createdAt       DateTime           @default(now())
-  updatedAt       DateTime           @updatedAt
+  id               String             @id @default(uuid())
+  groupId          String
+  group            ProductOptionGroup @relation(fields: [groupId], references: [id])
+  name             String
+  priceAdjustment  Int                @default(0)
+  isAvailable      Boolean            @default(true)
+  displayOrder     Int                @default(0)
+  orderItemOptions OrderItemOption[]
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
 }
 
 model InventoryItem {
@@ -95,4 +99,103 @@ model InventoryItem {
   lowStockThreshold Int      @default(0)
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+}
+
+enum OrderType {
+  DINE_IN
+  TAKE_AWAY
+}
+
+enum OrderStatus {
+  PENDING
+  NEW
+  PREPARING
+  READY
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CASH
+  ONLINE
+}
+
+enum PaymentStatus {
+  UNPAID
+  PENDING
+  PAID
+  FAILED
+  EXPIRED
+  REFUNDED
+}
+
+model Order {
+  id                   String             @id @default(uuid())
+  orderNumber          String             @unique
+  outletId             String
+  outlet               Outlet             @relation(fields: [outletId], references: [id])
+  customerName         String
+  customerEmail        String
+  orderType            OrderType
+  tableNumber          Int?
+  status               OrderStatus        @default(PENDING)
+  reservationExpiresAt DateTime
+  queueNumber          Int?
+  queueOperationalDay  String?
+  subtotal             Int
+  serviceFee           Int
+  totalAmount          Int
+  items                OrderItem[]
+  payment              Payment?
+  guestAccesses        GuestOrderAccess[]
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+}
+
+model OrderItem {
+  id                  String            @id @default(uuid())
+  orderId             String
+  order               Order             @relation(fields: [orderId], references: [id])
+  productId           String
+  product             Product           @relation(fields: [productId], references: [id])
+  productNameSnapshot String
+  unitPrice           Int
+  quantity            Int
+  notes               String?
+  options             OrderItemOption[]
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+}
+
+model OrderItemOption {
+  id                 String        @id @default(uuid())
+  orderItemId        String
+  orderItem          OrderItem     @relation(fields: [orderItemId], references: [id])
+  optionId           String
+  option             ProductOption @relation(fields: [optionId], references: [id])
+  optionNameSnapshot String
+  priceAdjustment    Int
+  createdAt          DateTime      @default(now())
+}
+
+model Payment {
+  id        String        @id @default(uuid())
+  orderId   String        @unique
+  order     Order         @relation(fields: [orderId], references: [id])
+  method    PaymentMethod
+  status    PaymentStatus @default(UNPAID)
+  amount    Int
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model GuestOrderAccess {
+  id             String    @id @default(uuid())
+  orderId        String
+  order          Order     @relation(fields: [orderId], references: [id])
+  tokenHash      String    @unique
+  expiresAt      DateTime
+  createdAt      DateTime  @default(now())
+  lastAccessedAt DateTime?
+  revokedAt      DateTime?
 }

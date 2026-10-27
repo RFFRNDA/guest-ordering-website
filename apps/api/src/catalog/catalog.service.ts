@@ -18,6 +18,7 @@ export class CatalogService {
         closeTime: true,
         timezone: true,
         tableNumberLimit: true,
+        serviceFee: true,
         categories: {
           where: { isActive: true },
           orderBy: [{ displayOrder: 'asc' }, { name: 'asc' }],

@@ -18,6 +18,7 @@ type OutletSeed = {
   openTime: string;
   closeTime: string;
   tableNumberLimit: number;
+  serviceFee: number;
 };
 
 // Membuat outlet (atau memperbaruinya) lalu mengosongkan katalognya,
@@ -27,6 +28,21 @@ async function resetOutlet(data: OutletSeed) {
     where: { slug: data.slug },
     update: data,
     create: data,
+  });
+  await prisma.orderItemOption.deleteMany({
+    where: { orderItem: { order: { outletId: outlet.id } } },
+  });
+  await prisma.orderItem.deleteMany({
+    where: { order: { outletId: outlet.id } },
+  });
+  await prisma.guestOrderAccess.deleteMany({
+    where: { order: { outletId: outlet.id } },
+  });
+  await prisma.payment.deleteMany({
+    where: { order: { outletId: outlet.id } },
+  });
+  await prisma.order.deleteMany({ 
+    where: { outletId: outlet.id } 
   });
   await prisma.productOption.deleteMany({
     where: { group: { product: { outletId: outlet.id } } },
@@ -52,6 +68,7 @@ async function main() {
     openTime: '08:00',
     closeTime: '22:00',
     tableNumberLimit: 20,
+    serviceFee: 3000,
   });
 
   const minuman = await prisma.category.create({
@@ -195,6 +212,7 @@ async function main() {
     openTime: '09:00',
     closeTime: '21:00',
     tableNumberLimit: 12,
+    serviceFee: 3000,
   });
 
   const dagoMinuman = await prisma.category.create({

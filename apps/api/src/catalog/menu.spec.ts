@@ -30,6 +30,7 @@ describe('GET /outlets/:slug/menu', () => {
     const menu = await res.json();
     expect(res.status).toBe(200);
     expect(menu.slug).toBe('taste-sudirman');
+    expect(menu.serviceFee).toBe(3000);
     expect(menu.categories.map((c: Named) => c.name)).toEqual([
       'Minuman',
       'Makanan',
