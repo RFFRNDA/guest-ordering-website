@@ -319,7 +319,9 @@ Expected capabilities include:
 
 Provider webhook endpoints are external integration boundaries and must not rely on browser-originated payment state.
 
-**Implemented (Milestone 3):** `GET /outlets/:slug/menu` (public, read-only; code in `catalog/`). Returns the outlet (id, name, slug, address, phone, openTime, closeTime, timezone, tableNumberLimit) with active categories (ordered by displayOrder, then name), each with active products (ordered by name), option groups and options (ordered by displayOrder). Unavailable products/options are included with `isAvailable: false`; inactive ones are omitted. Unknown or inactive outlets return 404 `OUTLET_NOT_FOUND`. The menu is returned outside operating hours; order creation enforces hours (Milestone 4). Products without a category are not returned yet. Timestamps and internal flags are not exposed.
+> The endpoint names above are a **conceptual API structure**, not a finalized contract. Exact endpoint naming, resource structure, HTTP semantics, pagination/filtering conventions, and REST conventions remain implementation decisions.
+
+**Implemented (Milestone 3):** `GET /outlets/:slug/menu` (public, read-only; code in `catalog/`). Returns the outlet (id, name, slug, address, phone, openTime, closeTime, timezone, tableNumberLimit, serviceFee) with active categories (ordered by displayOrder, then name), each with active products (ordered by name), option groups and options (ordered by displayOrder). Unavailable products/options are included with `isAvailable: false`; inactive ones are omitted. Unknown or inactive outlets return 404 `OUTLET_NOT_FOUND`. The menu is returned outside operating hours; order creation enforces hours (Milestone 4). Products without a category are not returned yet. Timestamps and internal flags are not exposed.
 
 ## 6.3 API Conventions
 The API should use:
@@ -968,6 +970,8 @@ Customer-facing failure categories include:
 **Implemented error format:** `{ "error": { "code": string, "message": string, "details"?: unknown } }`.
 Validation errors use `code = VALIDATION_FAILED` with HTTP 400 and `details[]` of `{ path, message }`.
 Unexpected errors return `INTERNAL_ERROR` (HTTP 500) with a generic message; details are logged server-side only.
+
+The mapping of other error categories to HTTP status codes remains an implementation decision.
 
 ## 20.3 Payment Provider Failure
 The payment provider may be unavailable or return a failed/expired result.

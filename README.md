@@ -133,7 +133,6 @@ The exact source structure may evolve during implementation. Keep the repository
 
 ### Prerequisites
 The development environment should provide:
-The development environment should provide:
 - Node.js and npm.
 - Docker (Docker Desktop on Windows/macOS), used to run PostgreSQL. Redis is added in a later milestone.
 
@@ -144,7 +143,6 @@ Clone the repository:
 ```bash
 git clone <repository-url>
 cd <project-directory>
-npm install
 ```
 Dependencies are installed per app, see the Development steps below.
 
@@ -160,7 +158,8 @@ Configure the required values for:
 - Authentication secrets.
 - Midtrans Sandbox.
 - Email/notification services where enabled.
-- `DATABASE_URL` must use the same user, password, and database name as the `POSTGRES_*` values in `.env`.
+
+`DATABASE_URL` must use the same user, password, and database name as the `POSTGRES_*` values in `.env`.
 
 Never commit real credentials or secrets to the repository.
 
@@ -278,11 +277,11 @@ The project is implemented incrementally, with each milestone building on the pr
 - Client-side cart.
 - Checkout.
 - Server-side order validation.
-- Order creation.
+- Order creation, including a flat per-outlet service fee.
 - Product-level inventory and stock reservation on order creation.
 - Guest tracking credential.
-- Email tracking-link delivery.
-- Queue and tracking information display.
+- Email tracking-link delivery (local Mailpit, sent directly, best-effort).
+- Tracking information display (periodic polling).
 
 > Scope note: queue numbers are assigned when an order becomes `NEW` (after payment confirmation), so queue assignment is delivered in Milestone 5; until then the tracking page shows payment-pending status. Automatic expiry of unpaid reservations is not active in this milestone: the release logic is written in Milestone 5 and scheduled in Milestone 8.
 
