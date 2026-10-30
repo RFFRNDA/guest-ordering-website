@@ -973,6 +973,19 @@ Unexpected errors return `INTERNAL_ERROR` (HTTP 500) with a generic message; det
 
 The mapping of other error categories to HTTP status codes remains an implementation decision.
 
+**Implemented (Milestone 4):** Order-creation error codes (domain errors use the same `{ error: { code, message, details? } }` format). Per-item errors carry `details: { itemIndex }`.
+
+| Code | HTTP | Meaning |
+|---|---|---|
+| `OUTLET_NOT_FOUND` | 404 | Unknown slug or inactive outlet |
+| `OUTLET_CLOSED` | 409 | Outside operating hours (open inclusive, close exclusive, evaluated in the outlet's timezone) |
+| `INVALID_TABLE_NUMBER` | 400 | Dine In table number above `tableNumberLimit` |
+| `PRODUCT_UNAVAILABLE` | 409 | Product missing from this outlet, inactive, or `isAvailable = false` |
+| `OPTION_UNAVAILABLE` | 409 | Selected option has `isAvailable = false` |
+| `INVALID_OPTION_SELECTION` | 400 | Option not owned by the product, required group incomplete, or min/max/SINGLE rule violated |
+
+Request limits for `POST /orders`: quantity 1-20 per line, at most 20 lines, at most 20 `optionIds` per line (no duplicates), customer name 1-60 characters (trimmed), item notes up to 200, email up to 254 and valid. `tableNumber` is required for `DINE_IN` and rejected for `TAKE_AWAY`. Prices and totals are never read from the request.
+
 ## 20.3 Payment Provider Failure
 The payment provider may be unavailable or return a failed/expired result.
 The order remains governed by the normal payment and reservation rules; the frontend must not invent a successful payment state.
